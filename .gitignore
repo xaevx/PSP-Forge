@@ -1,0 +1,20 @@
+# Local game media and proprietary extracted data
+*.iso
+*.bin
+*.cue
+*.elf
+*.irx
+*.chd
+*.cso
+*.pbp
+*.7z
+*.rar
+*.zip
+
+# Local research reports and scratch extraction directories
+local-research/
+private-game-data/
+reports/local-*
+build/
+__pycache__/
+*.py[cod]
