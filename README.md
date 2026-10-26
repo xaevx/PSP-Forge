@@ -9,12 +9,15 @@ PSP Forge is a toolkit scaffold for evaluating selected PC/PS2 game projects and
 - JSON output suitable for later tooling.
 - A profile template for recording engine, assets, target hardware, adapters and acceptance tests.
 - Minimal C++ PSP homebrew smoke-test target using PSPSDK.
+- Unit tests and GitHub Actions checks for the Python tooling.
 
 Heuristic results are hints only. The analyser does not identify a game reliably, parse proprietary archives, reverse engineer executables, or convert assets yet.
 
 ## Architecture
 
 - `tools/forge.py`: Python CLI for inventory and preliminary feasibility.
+- `tests/`: analyser tests.
+- `.github/workflows/python-tests.yml`: automated Python checks.
 - `profiles/`: explicit per-game or per-engine port profiles.
 - `runtime/psp/`: C++ PSP smoke test and PSPSDK Makefile.
 - `docs/PORTING_PIPELINE.md`: development plan and acceptance gates.
@@ -42,6 +45,16 @@ python tools/forge.py validate-profile profiles/example.json
 ```
 
 This checks basic structure, not whether the profile is technically correct.
+
+## Run Python tests
+
+From the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+GitHub Actions runs these tests and validates the example profile on pushes and pull requests.
 
 ## Build the PSP smoke test
 
