@@ -6,6 +6,22 @@ Investigate whether the original PlayStation 2 release of **Bully** can be adapt
 
 This is a feasibility plan, not a claim that a playable port already exists. An ISO is not a native PSP executable, and PSP Forge does not currently convert PS2 games automatically.
 
+## Size-reduction strategy
+
+The reported ~4.5 GB figure is the size of the PS2 disc image, not a requirement that a native PSP port must occupy the same amount of storage or RAM. Disc images can contain padding and data laid out for the original disc. Compressing the image for archival storage does not make its executable compatible with PSP.
+
+Plan for a selective, measured port rather than a one-to-one disc copy:
+
+1. **Inventory before modifying:** identify the exact release, inspect file sizes and archive structure, and distinguish padding from meaningful data only when evidence supports it.
+2. **Set an asset budget:** record size and format for textures, models, animation, audio, cutscenes, scripts, and level data. Do not set a final package-size target until the inventory is measured.
+3. **Textures:** reduce resolution where acceptable and convert to a PSP-supported compressed format. Validate visual quality and runtime memory cost.
+4. **Models and animation:** simplify geometry, remove unused data, and reduce animation data where safe.
+5. **Audio and video:** use lower-bitrate/reduced-resolution media where appropriate; omit optional languages or cutscenes only if the chosen scope permits it.
+6. **World streaming:** load nearby areas and required mission assets on demand. This reduces peak RAM pressure, but does not by itself reduce total installed size.
+7. **Content scope:** first prototype a small, clearly defined slice (one environment, player movement, camera, and one interaction). Add missions and locations only after performance and asset-loading gates pass.
+
+Never delete files or rebuild a disc image based on file extensions alone. Keep the original legally obtained dump unchanged and make experiments on a separate working copy. Do not upload the disc image or proprietary extracted assets to GitHub.
+
 ## Constraints and ground rules
 
 - Target the original PS2 release, not Scholarship Edition (PC/Xbox 360/Wii).
@@ -44,6 +60,8 @@ This is a feasibility plan, not a claim that a playable port already exists. An 
 - [ ] Mark each hypothesis as confirmed, likely, or unknown, with evidence.
 - [ ] Establish whether useful public documentation or reusable, legally available tooling exists.
 - [ ] Estimate CPU, RAM, GPU, storage, and streaming requirements.
+- [ ] Establish an evidence-based installed-size budget after the asset inventory; do not promise a compressed final size in advance.
+- [ ] Separate archival image compression from runtime asset optimization in all reports.
 
 **Exit gate:** produce a title-specific feasibility report with explicit unknowns and blockers.
 
@@ -63,6 +81,7 @@ Proceed only if B2 provides a credible route forward.
 
 - [ ] Validate one format at a time using authorised local data.
 - [ ] Prototype one static model or environment element, if technically and legally appropriate.
+- [ ] Measure source and converted asset sizes and document visual/performance trade-offs.
 - [ ] Investigate animation, collision, scripting, audio, and world streaming separately.
 - [ ] Compare results against reference behaviour without distributing copyrighted material.
 - [ ] Reassess performance and memory after each subsystem.
