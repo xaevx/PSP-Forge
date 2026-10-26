@@ -1,19 +1,47 @@
 {
   "profile_name": "example-engine-port",
+  "profile_version": 1,
   "status": "template",
-  "source_platform": "pc-or-console",
-  "source_engine": "identify-me",
-  "entrypoint": "not-configured",
+  "source": {
+    "title": "replace-me",
+    "platform": "pc-or-ps2",
+    "engine": "identify-me",
+    "source_available": false,
+    "license": "verify-before-use",
+    "notes": "Record exact version and source provenance."
+  },
+  "feasibility": {
+    "category": "unassessed",
+    "known_blockers": [],
+    "evidence": []
+  },
   "assets": {
     "formats": [],
+    "conversion_tools": [],
     "redistribution_allowed": false,
     "notes": "Use assets you are authorised to use."
+  },
+  "psp_target": {
+    "minimum_model": "PSP-1000",
+    "memory_budget_mib": 24,
+    "resolution": "480x272",
+    "target_fps": 30
   },
   "psp_adaptations": {
     "renderer": "not-implemented",
     "audio": "not-implemented",
     "input": "not-implemented",
-    "memory_budget_mib": 24
+    "filesystem": "not-implemented",
+    "threads": "not-implemented"
   },
-  "tests": []
+  "acceptance_tests": [
+    "clean-build",
+    "boots-in-ppsspp",
+    "boots-on-hardware",
+    "input",
+    "audio",
+    "save-load",
+    "performance-budget"
+  ],
+  "known_issues": []
 }
