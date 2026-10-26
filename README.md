@@ -1,47 +1,66 @@
-# PSP Forge — prototype 0.1
+# PSP Forge — prototype 0.2
 
-A starter toolkit for analysing a game project and scaffolding a native PSP port.
-This is **not** a universal game converter. It inventories files, identifies common
-game/project clues, writes a report, and includes a minimal PSPSDK homebrew target.
+PSP Forge is a toolkit scaffold for evaluating selected PC/PS2 game projects and building **title-specific native PSP ports**. It is not a universal ISO or executable converter.
+
+## Current capabilities
+
+- Read-only project inventory and extension counts.
+- Preliminary feasibility classification based on file clues.
+- JSON output suitable for later tooling.
+- A profile template for recording engine, assets, target hardware, adapters and acceptance tests.
+- Minimal C++ PSP homebrew smoke-test target using PSPSDK.
+
+Heuristic results are hints only. The analyser does not identify a game reliably, parse proprietary archives, reverse engineer executables, or convert assets yet.
 
 ## Architecture
 
-- `tools/forge.py`: Python CLI for project inventory, heuristics, JSON report.
-- `runtime/psp/`: minimal C++ PSP app entry point and PSPSDK Makefile.
-- `profiles/`: per-game/engine profiles. Add explicit, tested profiles instead
-  of pretending every game has the same format.
-- `docs/PORTING_PIPELINE.md`: realistic development plan.
+- `tools/forge.py`: Python CLI for inventory and preliminary feasibility.
+- `profiles/`: explicit per-game or per-engine port profiles.
+- `runtime/psp/`: C++ PSP smoke test and PSPSDK Makefile.
+- `docs/PORTING_PIPELINE.md`: development plan and acceptance gates.
 
 ## Requirements
 
-- Python 3.10+ for the analyser.
-- For building the PSP executable: PSPDEV/PSPSDK toolchain and GNU Make.
-  Install guide: https://pspdev.github.io/
+- Python 3.10+ for host-side tools.
+- PSPDEV/PSPSDK and GNU Make for building the PSP application.
+- PPSSPP for early smoke tests; physical PSP hardware for final validation.
+
+PSPDEV installation: https://pspdev.github.io/
 
 ## Run the analyser
 
 ```bash
-python tools/forge.py analyze /path/to/your/legally-obtained-game-files --out build/report.json
+python tools/forge.py analyze /path/to/your/game-project --out build/forge-report.json
 ```
 
-It scans filenames and sizes only; it does not modify source files or extract
-protected content. It flags possible asset layouts and executables for manual
-review. Heuristics are not proof of a game's origin or compatibility.
+The input must be a directory. The analyser scans filenames and sizes only and writes the report to the requested output path.
 
-## Build the PSP smoke-test app
+## Validate a profile
 
-From `runtime/psp/` in a PSPDEV environment:
+```bash
+python tools/forge.py validate-profile profiles/example.json
+```
+
+This checks basic structure, not whether the profile is technically correct.
+
+## Build the PSP smoke test
+
+In a PSPDEV shell, from `runtime/psp/`:
 
 ```bash
 make
 ```
 
-The PSPSDK `build.mak` generates an EBOOT.PBP target from the app. Build variables
-and toolchain paths can differ by PSPDEV installation, so check the SDK samples if
-your local environment uses a different layout.
+The expected output includes `EBOOT.PBP`. If the SDK path is not configured, follow the installed PSPDEV environment's setup instructions. A successful build is not yet proof of emulator or hardware compatibility.
 
-## Safety / legal notes
+## Development gates
 
-Use game files you own or are authorised to modify. Do not distribute proprietary
-game assets. Keep each port in a separate profile with its own source, asset,
-licensing, memory, input, audio, and rendering notes.
+1. Validate the toolchain and run the smoke test in PPSSPP.
+2. Test and harden the Python analyser.
+3. Choose one legally usable, source-available PC game as the first port target.
+4. Implement a minimal end-to-end slice: load a converted asset, render it, accept input and play a sound.
+5. Investigate PS2 titles separately, one engine/title at a time.
+
+## Legal and scope notes
+
+Use source and assets you are authorised to modify. Do not commit proprietary game data. Native porting requires engine/game logic and PSP-specific renderer, audio, input, memory and filesystem work. An ISO alone cannot be converted directly into a PSP application.
