@@ -8,5 +8,6 @@ LIBS = -lpspdebug -lpspdisplay -lpspctrl
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = PSP Forge Smoke Test
 
-# Standard PSPSDK build helper. Confirm PSPSDK is set by your PSPDEV install.
+# Ask the installed PSPDEV toolchain for the PSPSDK location.
+PSPSDK = $(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak
