@@ -1,0 +1,58 @@
+{
+  "profile_name": "bully-ps2-to-psp",
+  "profile_version": 1,
+  "status": "research",
+  "source": {
+    "title": "Bully (original PlayStation 2 release)",
+    "platform": "PlayStation 2",
+    "engine": "RenderWare-based proprietary game technology (exact build and interfaces to be researched)",
+    "source_available": false,
+    "license": "proprietary; do not redistribute game code or assets",
+    "notes": "Initial feasibility profile only. A PS2 disc image is not a native PSP port. Use legally obtained media and keep proprietary files out of this repository."
+  },
+  "feasibility": {
+    "category": "binary_only_title_specific_reimplementation_or_port",
+    "known_blockers": [
+      "No verified source code for the original PS2 game",
+      "PS2 executable and binary assets are not directly compatible with PSP",
+      "Engine, rendering, animation, world streaming, scripting, audio and save systems require title-specific analysis",
+      "PSP CPU, GPU, RAM and storage budgets require profiling and substantial redesign"
+    ],
+    "evidence": [
+      "Public platform references identify the original PS2 version as using RenderWare",
+      "No local game files have been inventoried yet; this status is provisional"
+    ]
+  },
+  "assets": {
+    "formats": [],
+    "conversion_tools": [],
+    "redistribution_allowed": false,
+    "notes": "Determine formats only from authorised local media and documented research. Do not commit extracted proprietary assets."
+  },
+  "psp_target": {
+    "minimum_model": "PSP-1000",
+    "memory_budget_mib": 24,
+    "resolution": "480x272",
+    "target_fps": 30
+  },
+  "psp_adaptations": {
+    "renderer": "not-implemented; prototype PSP-native renderer first",
+    "audio": "not-implemented",
+    "input": "not-implemented",
+    "filesystem": "not-implemented",
+    "threads": "not-implemented"
+  },
+  "acceptance_tests": [
+    "PSP Forge smoke-test builds with PSPSDK",
+    "native EBOOT.PBP boots in PPSSPP",
+    "native EBOOT.PBP boots on physical PSP hardware",
+    "prototype renders a test scene at 480x272",
+    "player movement and camera prototype",
+    "asset-loading and memory-budget tests",
+    "performance profiling before any full-game scope claim"
+  ],
+  "known_issues": [
+    "This profile is a research plan, not evidence that a Bully port currently works",
+    "No full-game conversion from an ISO is supported"
+  ]
+}
