@@ -16,6 +16,8 @@ Heuristic results are hints only. The analyser does not identify a game reliably
 ## Architecture
 
 - `tools/forge.py`: Python CLI for inventory and preliminary feasibility.
+- `tools/iso_intake.py`: local-only, read-only disc-image metadata and optional 7z listing report.
+- `docs/ISO_INTAKE.md`: safe workflow for local PS2 ISO intake and research.
 - `tests/`: analyser tests.
 - `.github/workflows/python-tests.yml`: automated Python checks.
 - `profiles/`: explicit per-game or per-engine port profiles.
