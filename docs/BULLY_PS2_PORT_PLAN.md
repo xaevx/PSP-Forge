@@ -2,7 +2,7 @@
 
 ## Objective
 
-Investigate whether the original PlayStation 2 release of **Bully** can be adapted into a native PSP application, using PSP Forge to manage the title-specific research, build pipeline, and validation.
+Investigate and, if feasibility gates support it, pursue a **full-game experience** based on the original PlayStation 2 release of **Bully**, adapted into a native PSP application. The target is balanced storage size, visual quality, and performance, using measured asset optimization rather than indiscriminate removal. PSP Forge manages the title-specific research, build pipeline, and validation.
 
 This is a feasibility plan, not a claim that a playable port already exists. An ISO is not a native PSP executable, and PSP Forge does not currently convert PS2 games automatically.
 
@@ -10,7 +10,7 @@ This is a feasibility plan, not a claim that a playable port already exists. An 
 
 The reported ~4.5 GB figure is the size of the PS2 disc image, not a requirement that a native PSP port must occupy the same amount of storage or RAM. Disc images can contain padding and data laid out for the original disc. Compressing the image for archival storage does not make its executable compatible with PSP.
 
-Plan for a selective, measured port rather than a one-to-one disc copy:
+Plan for a measured, optimized native port rather than a one-to-one disc copy. The product goal is a full-game experience, but implementation must start with a small vertical slice and expand only when each technical gate passes. A full-game goal is not evidence that full compatibility is feasible.
 
 1. **Inventory before modifying:** identify the exact release, inspect file sizes and archive structure, and distinguish padding from meaningful data only when evidence supports it.
 2. **Set an asset budget:** record size and format for textures, models, animation, audio, cutscenes, scripts, and level data. Do not set a final package-size target until the inventory is measured.
@@ -18,7 +18,7 @@ Plan for a selective, measured port rather than a one-to-one disc copy:
 4. **Models and animation:** simplify geometry, remove unused data, and reduce animation data where safe.
 5. **Audio and video:** use lower-bitrate/reduced-resolution media where appropriate; omit optional languages or cutscenes only if the chosen scope permits it.
 6. **World streaming:** load nearby areas and required mission assets on demand. This reduces peak RAM pressure, but does not by itself reduce total installed size.
-7. **Content scope:** first prototype a small, clearly defined slice (one environment, player movement, camera, and one interaction). Add missions and locations only after performance and asset-loading gates pass.
+7. **Full-game scope:** preserve the full gameplay experience as the long-term target. Start with a small, clearly defined vertical slice (one environment, player movement, camera, and one interaction), then expand through missions, locations, activities, cutscenes, and save/load only after each subsystem passes quality, performance, and compatibility gates. Remove content only if technically necessary and document the impact; do not assume optional content can be deleted without breaking dependencies.
 
 Never delete files or rebuild a disc image based on file extensions alone. Keep the original legally obtained dump unchanged and make experiments on a separate working copy. Do not upload the disc image or proprietary extracted assets to GitHub.
 
@@ -45,8 +45,12 @@ Never delete files or rebuild a disc image based on file extensions alone. Keep 
 
 ### B1 — Identify the exact game release
 
+**Known input from project owner:** one PS2 ISO reported to be approximately 4.5 GB. This size and its contents have not yet been independently inspected by PSP Forge.
+
 - [ ] Identify region, disc serial, and revision from a legally obtained copy.
 - [ ] Keep the disc image local; do not upload it to GitHub or chat.
+- [ ] Record the exact file size in bytes and a SHA-256 hash locally; do not share the ISO itself.
+- [ ] Inspect disc layout and filesystem metadata with read-only tools before choosing any extraction or optimization approach.
 - [ ] Record hashes and non-sensitive metadata locally if useful.
 - [ ] Locate the main executable through documented, local inspection tools.
 - [ ] Record findings without copying proprietary code or asset data into this repository.
@@ -61,6 +65,8 @@ Never delete files or rebuild a disc image based on file extensions alone. Keep 
 - [ ] Establish whether useful public documentation or reusable, legally available tooling exists.
 - [ ] Estimate CPU, RAM, GPU, storage, and streaming requirements.
 - [ ] Establish an evidence-based installed-size budget after the asset inventory; do not promise a compressed final size in advance.
+- [ ] Compare the reported 4.5 GB ISO size with actual logical file sizes and disc-layout overhead; do not assume all excess space is removable padding.
+- [ ] Classify each asset group by required gameplay role, storage size, runtime memory use, quality impact, and conversion risk.
 - [ ] Separate archival image compression from runtime asset optimization in all reports.
 
 **Exit gate:** produce a title-specific feasibility report with explicit unknowns and blockers.
@@ -88,14 +94,16 @@ Proceed only if B2 provides a credible route forward.
 
 **Exit gate:** a repeatable proof of concept demonstrates at least one meaningful game-specific subsystem on PSP.
 
-### B5 — Scope decision
+### B5 — Full-game integration and release gates
 
-Choose one evidence-based path:
-1. Continue a native title-specific port.
-2. Build a clean-room reimplementation of selected systems.
-3. Stop or narrow scope if technical blockers make the target infeasible.
+The intended release goal is the full game experience with a balanced storage, quality, and performance trade-off. Work toward that goal through evidence-based stages:
+1. Prove the native PSP runtime and asset pipeline using original or openly licensed test assets.
+2. Demonstrate a Bully-specific vertical slice using authorised local assets, where feasible.
+3. Add world streaming, gameplay systems, missions, locations, animation, audio, cutscenes, and save/load incrementally.
+4. Track content coverage and known differences against the target PS2 release.
+5. Reassess feasibility at each gate. If the full scope is not technically achievable, document the blocker and options instead of claiming a complete port.
 
-A complete game port must not be promised until core gameplay, world loading, animation, input, audio, saving, stability, and performance have all been demonstrated.
+A full-game port must not be described as complete until core gameplay, world loading, missions, animation, input, audio, saving, stability, and performance have been demonstrated across the intended content.
 
 ## Initial risks
 
@@ -103,10 +111,12 @@ A complete game port must not be promised until core gameplay, world loading, an
 |---|---|---|
 | No verified original source | Binary analysis and reimplementation can be extensive | Investigate source availability and tooling before implementation |
 | PS2/PSP architecture differences | Executable code and hardware APIs are not directly interchangeable | Use a native PSP runtime and explicit subsystem adapters |
-| Memory and performance limits | Open-world assets and streaming can exceed PSP budgets | Profile early; use reduced assets, streaming, and measured budgets |
+| Memory and performance limits | Open-world assets and streaming can exceed PSP budgets | Profile early; use balanced asset reductions, streaming, and measured budgets |
+| Visual-quality loss | Aggressive downscaling can make the game look poor | Compare quality at several compression/resolution levels and choose measured trade-offs |
+| Full-game integration complexity | Missions and assets may have dependencies on shared scripts and world data | Track content coverage and test dependencies; never delete by extension alone |
 | Unknown proprietary formats | Asset extraction/conversion may be a major project itself | Validate formats incrementally; do not assume extensions prove format |
 | Legal and repository hygiene | Game code and assets should not be redistributed | Keep game material local; commit original tools and permitted metadata only |
 
 ## Current status
 
-**Research / feasibility.** No Bully game files have been inspected by PSP Forge yet. The next useful evidence is the exact PS2 release metadata and a successful native PSP smoke test.
+**Research / feasibility.** The project goal is a full-game experience with optimized assets and a balanced size/quality/performance trade-off. The owner reports having one PS2 ISO of approximately 4.5 GB; PSP Forge has not inspected its contents, and that size is not yet independently verified. The ISO cannot be converted directly into a native PSP application. Next evidence: confirm exact release metadata and local file hash, then build and test the native PSP smoke test before game-specific implementation.
