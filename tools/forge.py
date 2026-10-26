@@ -123,7 +123,7 @@ def analyze(root: Path) -> dict[str, Any]:
         "preliminary_feasibility": feasibility,
         "warnings": [
             "Filename and extension heuristics are clues, not proof of platform, title, ownership, or compatibility.",
-            "No executable, disc image, or asset is converted by this analyser.",
+            "A disc image or executable cannot be converted directly into a native PSP application by this analyser.",
             "Native ports require source/engine work and PSP-specific adaptations.",
             "The report is preliminary and must be reviewed by a developer.",
         ],
@@ -165,10 +165,15 @@ def main() -> None:
         profile = json.loads(args.profile.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         parser.error(f"could not read profile JSON: {exc}")
-    required = ["profile_name", "status", "source_platform", "source_engine", "psp_adaptations"]
+    required = ["profile_name", "status", "source", "psp_adaptations"]
     missing = [field for field in required if field not in profile]
     if missing:
         parser.error("profile is missing required fields: " + ", ".join(missing))
+    if not isinstance(profile["source"], dict):
+        parser.error("'source' must be a JSON object")
+    source_missing = [field for field in ("platform", "engine") if not profile["source"].get(field)]
+    if source_missing:
+        parser.error("'source' is missing required fields: " + ", ".join(source_missing))
     if not isinstance(profile["psp_adaptations"], dict):
         parser.error("'psp_adaptations' must be a JSON object")
     print(f"Profile structure OK: {profile['profile_name']}")
