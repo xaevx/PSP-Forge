@@ -1,0 +1,19 @@
+{
+  "profile_name": "example-engine-port",
+  "status": "template",
+  "source_platform": "pc-or-console",
+  "source_engine": "identify-me",
+  "entrypoint": "not-configured",
+  "assets": {
+    "formats": [],
+    "redistribution_allowed": false,
+    "notes": "Use assets you are authorised to use."
+  },
+  "psp_adaptations": {
+    "renderer": "not-implemented",
+    "audio": "not-implemented",
+    "input": "not-implemented",
+    "memory_budget_mib": 24
+  },
+  "tests": []
+}
